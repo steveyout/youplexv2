@@ -47,6 +47,7 @@ VideoPostCard.propTypes = {
 
 export default function VideoPostCard({ movie, index }) {
   const isDesktop = useResponsive('up', 'md');
+  console.log(movie)
   const {  adult,
     backdrop_path,
     name,
@@ -98,6 +99,7 @@ export default function VideoPostCard({ movie, index }) {
           voteCount={vote_count}
           popularity={popularity}
           createdAt={release_date}
+          type={title!==undefined?'movie':'tv'}
           id={id}
           index={index}
         />
@@ -181,6 +183,7 @@ PostContent.propTypes = {
 
 export function PostContent({ title, voteAverage, voteCount,popularity, createdAt, index, id,type }) {
   const isDesktop = useResponsive('up', 'md');
+  console.log(type);
   const linkTo =type==='movie'?PATH_PAGE.movie(paramCase(title)+'?id='+id):PATH_PAGE.tv(paramCase(title)+'?id='+id);
   const latestPostLarge = index === 0;
   const latestPostSmall = index === 1 || index === 2 || index === 3;

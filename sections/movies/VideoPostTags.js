@@ -21,7 +21,7 @@ export default function VideoPostTags({ post,setMovie }) {
     const { enqueueSnackbar } = useSnackbar();
 
     const { id } = query;
-    let { tags,episodes,type} = post;
+    let { genres,episodes,type} = post;
 
     const handleChangeEpisode = async (episodeId,index) => {
         try {
@@ -53,10 +53,10 @@ export default function VideoPostTags({ post,setMovie }) {
     <>
     <Box sx={{ py: 3 }}>
         <Typography variant="h6" sx={{ mb: 5 }}>
-            Tags
+            Genres
         </Typography>
-      {tags &&
-        tags.map((tag) => <Chip key={tag} label={tag} sx={{ m: 0.5 }} variant={'outlined'} />)}
+      {genres&&
+        genres.map((genre) => <Chip key={genre.name} label={genre.name} sx={{ m: 0.5 }} variant={'outlined'} />)}
     </Box>
         {['tv','anime'].some(el => pathname.includes(el))&&(
     <Box sx={{ py: 3 }}>

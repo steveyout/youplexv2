@@ -20,7 +20,7 @@ export default function VideoPostRecent({ posts }) {
       <Grid container spacing={3}>
         {posts.map((post) => (
           <Grid key={post.id} item xs={12} sm={6} md={3}>
-            <VideoPostCard video={post} />
+            <VideoPostCard movie={post} />
           </Grid>
         ))}
       </Grid>

