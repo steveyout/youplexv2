@@ -13,18 +13,19 @@ import useSettings from '@/hooks/useSettings';
 import useIsMountedRef from '@/hooks/useIsMountedRef';
 // utils
 import axios from '@/utils/axios';
-import { MOVIES } from 'wikiextensions-flix';
 // layouts
 import Layout from '@/layouts';
 // components
 import Page from '@/components/Page';
-import Markdown from '@/components/Markdown';
 import HeaderBreadcrumbs from '@/components/HeaderBreadcrumbs';
 import { SkeletonPost } from '@/components/skeleton';
 // sections
-import { VideoPostHero, VideoPostTags, VideoPostRecent,VidstackPlayer } from '@/sections/movies';
+import { VideoPostTags, VideoPostRecent,VidstackPlayer } from '@/sections/movies';
 import Iconify from '@/components/Iconify';
 import { useSnackbar } from 'notistack';
+//movies
+import { MovieDb } from 'moviedb-promise';
+import { servers } from '@/utils/servers';
 
 const RootStyle = styled('div')(({ theme }) => ({
   paddingTop: theme.spacing(8),
@@ -35,13 +36,13 @@ const RootStyle = styled('div')(({ theme }) => ({
 }));
 // ----------------------------------------------------------------------
 
-BlogPost.getLayout = function getLayout(page) {
+TvPage.getLayout = function getLayout(page) {
   return <Layout variant="main">{page}</Layout>;
 };
 
 // ----------------------------------------------------------------------
 
-export default function BlogPost({ data }) {
+export default function TvPage({ data }) {
   const { themeStretch } = useSettings();
 
   const isMountedRef = useIsMountedRef();
@@ -51,19 +52,21 @@ export default function BlogPost({ data }) {
   const { id } = query;
   const [movie, setMovie] = useState(data);
   const [loading, setLoading] = useState(true);
-  const [streamingServer,setStreamingServer]=useState({
-    isChanging:false,
-    server:'UpCloud'
-  })
+
   const { enqueueSnackbar } = useSnackbar();
 
   const [error, setError] = useState(null);
+  const[server,setCurrentServer]=useState({
+    server:'VidSrc',
+    isChanging: false,
+
+  })
 
   const getMovie = useCallback(async (server,isChanging) => {
     try {
       if (!movie||isChanging) {
         setLoading(true)
-        const response = await axios.get(`/api/series/${id}`,{params:{server:server}});
+        const response = await axios.get(`/api/movie/${id}`,{params:{server:server}});
 
         if (isMountedRef.current) {
           setMovie(response.data);
@@ -77,14 +80,18 @@ export default function BlogPost({ data }) {
     }
   }, [isMountedRef]);
 
+
+  //get movie embed url
+
+
   useEffect(() => {
-    getMovie(streamingServer.server,streamingServer.isChanging);
-  }, [getMovie,streamingServer]);
+    getMovie(server.server,server.isChanging);
+  }, [getMovie,server]);
 
   const structuredData = {
     "@context": "https://schema.org/",
     "@type": "Movie",
-    "name": movie ? sentenceCase(movie.title) : sentenceCase(id),
+    "name": movie ? sentenceCase(movie.title?movie.title:movie.name) : sentenceCase(id),
     "productionCompany": {
       "@type": "Organization",
       "name": movie&&movie.production
@@ -96,7 +103,7 @@ export default function BlogPost({ data }) {
   };
   return (
     <Page
-      title={movie ? sentenceCase(movie.title) : sentenceCase(id)}
+      title={movie ? sentenceCase(movie.title?movie.title:movie.name) : sentenceCase(id)}
       meta={
         <>
           <meta name="description" content={movie?movie.description:id} />
@@ -112,24 +119,24 @@ export default function BlogPost({ data }) {
             links={[
               { name: 'Home', href: '/' },
               { name: 'Tv', href: PATH_PAGE.series },
-              { name: movie ? sentenceCase(movie.title) : sentenceCase(id) },
+              { name: movie ? sentenceCase(movie.title?movie.title:movie.name) : sentenceCase(id) },
             ]}
           />
 
           {!loading && (
             <Card>
-              <VidstackPlayer post={movie} setStreamingServer={setStreamingServer} streamingServer={streamingServer}/>
+              <iframe src={movie.embedUrl}/>
 
               <Box sx={{ p: { xs: 3, md: 5 } }}>
                 <Stack flexWrap="wrap" direction="row" justifyContent="space-between">
                   <Typography variant="h6" sx={{ mb: 5 }}>
-                    {movie.title}
+                    {movie.title?movie.title:movie.name}
                   </Typography>
 
                   <Box>
                     <Tooltip title={`Join Telegram channel`}>
                       <NextLink href={'https://t.me/youplexannouncments'} passHref>
-                        <Button variant="contained" startIcon={<Iconify icon={'la:telegram'} />}>
+                        <Button variant="contained" startIcon={<Iconify icon={'la:telegram'}/>}>
                           Telegram
                         </Button>
                       </NextLink>
@@ -145,9 +152,9 @@ export default function BlogPost({ data }) {
                   </Box>
                 </Stack>
                 <Box>
-                  <VideoPostTags post={movie} setMovie={setMovie}/>
+                  <VideoPostTags post={movie} />
                 </Box>
-                {movie.description}
+                {movie.overview}
               </Box>
             </Card>
           )}
@@ -165,51 +172,15 @@ export default function BlogPost({ data }) {
 
 export async function getServerSideProps(context) {
   try {
-    const id = context.params.id;
-    const flixhq = new MOVIES.FlixHQ();
-    const videoResult= {
-      sources: [],
-      subtitles: [],
-    }
-    const movie = await flixhq.fetchMovieInfo(`tv/${id}`);
-    const servers=await flixhq.fetchEpisodeServers(`tv/${id}`,movie.episodes[0].id);
-    const i = servers.findIndex(s => s.name === 'UpCloud');
-    const { data } = await axios.get(`${process.env.BASE_URL}/ajax/sources/${servers[i].id}`);
-    const videoUrl = new URL(data.link);
-    const mid = videoUrl.href.split('/').pop()?.split('?')[0];
-    let sources =await axios.post(`${process.env.API}/api/sources/upcloud`, { "id": mid })
-    let res2 = await axios.get(sources.data.source);
-    res2=res2.data
-    const urls = res2.split('\n').filter((line) => line.includes('.m3u8'));
-    const qualities = res2.split('\n').filter((line) => line.includes('RESOLUTION='));
-    const TdArray = qualities.map((s, i) => {
-      const f1 = s.split('x')[1];
-      const f2 = urls[i];
+    const id = context.query.id;
+    const server=servers.find((server) => server.name === 'VidSrc');
+    const moviedb = new MovieDb(process.env.TMDB_API_KEY);
+    const movie=await moviedb.tvInfo({ id: id });
+    const similar=await moviedb.tvSimilar({ id: id });
+    movie.recommended=await similar.results;
+    movie.embedUrl=`${server.url}/${id}`;
+    console.log(movie);
 
-      return [f1, f2];
-    });
-
-    for (const [f1, f2] of TdArray) {
-      videoResult.sources.push({
-        url: f2,
-        quality: f1,
-        isM3U8: f2.includes('.m3u8'),
-      });
-    }
-
-    videoResult.sources.push({
-      url: sources.data.source,
-      isM3U8: sources.data.source.includes('.m3u8'),
-      quality: 'auto',
-    });
-
-    videoResult.subtitles = sources.data.subtitle.map((s) => ({
-      url: s.file?s.file:s,
-      lang: s.label ? s.label : s,
-      default:!!(s.default && s.default === true)
-    }));
-    movie.sources = videoResult.sources;
-    movie.subtitles=videoResult.subtitles
     return {
       props: {
         data: movie,
