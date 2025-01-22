@@ -152,7 +152,7 @@ export default function TvPage({ data }) {
                   </Box>
                 </Stack>
                 <Box>
-                  <VideoPostTags post={movie} />
+                  <VideoPostTags movie={movie} />
                 </Box>
                 {movie.overview}
               </Box>
@@ -179,7 +179,6 @@ export async function getServerSideProps(context) {
     const similar=await moviedb.tvSimilar({ id: id });
     movie.recommended=await similar.results;
     movie.embedUrl=`${server.url}/${id}`;
-    console.log(movie);
 
     return {
       props: {
