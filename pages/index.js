@@ -4,7 +4,7 @@ import { useEffect, useCallback, useState } from 'react';
 // next
 import NextLink from 'next/link';
 // @mui
-import { styled,keyframes } from '@mui/material/styles';
+import { styled, keyframes } from '@mui/material/styles';
 import { Grid, Button, Container, Stack, Box, Alert, AlertTitle } from '@mui/material';
 // hooks
 import useSettings from '../hooks/useSettings';
@@ -68,7 +68,7 @@ const applySort = (posts, sortBy) => {
 };
 export default function Videos({ data }) {
   const { themeStretch } = useSettings();
-  const pulse = keyframes `
+  const pulse = keyframes`
     0% {
       transform: scale(1);
     }
@@ -78,7 +78,7 @@ export default function Videos({ data }) {
     100% {
       transform: scale(1);
     }
-  `
+  `;
 
   const isMountedRef = useIsMountedRef();
 
@@ -134,24 +134,25 @@ export default function Videos({ data }) {
   };
 
   ////////////structured data
-  const list=[]
-  videos&&videos.map((movie,index)=>{
-    list.push({
-      "@type": "ListItem",
-      "position": index,
-      "item": {
-        "@type": "Movie",
-        "url": PATH_PAGE.movie(movie.title),
-        "name": movie.title,
-        "image": process.env.TMDB_URL+movie.poster_path,
-        "dateCreated": movie.release_date,
-      }
-    })
-  })
+  const list = [];
+  videos &&
+    videos.map((movie, index) => {
+      list.push({
+        '@type': 'ListItem',
+        'position': index,
+        'item': {
+          '@type': 'Movie',
+          'url': PATH_PAGE.movie(movie.title),
+          'name': movie.title,
+          'image': process.env.TMDB_URL + movie.poster_path,
+          'dateCreated': movie.release_date,
+        },
+      });
+    });
   const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "itemListElement": list
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    'itemListElement': list,
   };
 
   return (
@@ -160,7 +161,11 @@ export default function Videos({ data }) {
         <Container maxWidth={themeStretch ? false : 'lg'}>
           <HeaderBreadcrumbs
             heading="Movies"
-            links={[{ name: 'Home', href: '/' }, { name: 'Movies',href: PATH_PAGE.movies },{ name: 'Trending' }]}
+            links={[
+              { name: 'Home', href: '/' },
+              { name: 'Movies', href: PATH_PAGE.movies },
+              { name: 'Trending' },
+            ]}
           />
 
           <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
@@ -194,38 +199,58 @@ export default function Videos({ data }) {
 
           <Stack alignItems={'center'} justifyContent={'center'} mb={5}>
             <NextLink href={'https://plexmovies.online/'} passHref>
-              <Button variant="contained" color={'warning'} startIcon={<Iconify icon={'icon-park-outline:play'} />} sx={{
-                animation: `${pulse} ${1500}ms ease-out infinite`,
-                mb:5
-              }}>
+              <Button
+                variant="contained"
+                color={'warning'}
+                startIcon={<Iconify icon={'icon-park-outline:play'} />}
+                sx={{
+                  animation: `${pulse} ${1500}ms ease-out infinite`,
+                  mb: 5,
+                }}
+              >
                 Zmov movies (multiserver)
               </Button>
             </NextLink>
 
             <NextLink href={'https://anime.youplex.site/'} passHref>
-              <Button variant="contained" color={'info'} startIcon={<Iconify icon={'icon-park-outline:play'} />} sx={{
-                animation: `${pulse} ${1500}ms ease-out infinite`,
-                mb:5
-              }}>
+              <Button
+                variant="contained"
+                color={'info'}
+                startIcon={<Iconify icon={'icon-park-outline:play'} />}
+                sx={{
+                  animation: `${pulse} ${1500}ms ease-out infinite`,
+                  mb: 5,
+                }}
+              >
                 Watch Anime (new)
               </Button>
             </NextLink>
 
             <NextLink href={'https://freeebies.site/'} passHref>
-              <Button variant="contained" color={'error'} startIcon={<Iconify icon={'codicon:tools'} />} sx={{
-                animation: `${pulse} ${1500}ms ease-out infinite`,
-                mb:5
-              }}>
+              <Button
+                variant="contained"
+                color={'error'}
+                startIcon={<Iconify icon={'codicon:tools'} />}
+                sx={{
+                  animation: `${pulse} ${1500}ms ease-out infinite`,
+                  mb: 5,
+                }}
+              >
                 Free internet tools (Hot)
               </Button>
             </NextLink>
 
             <NextLink href={'https://sunnymovies.site/'} passHref>
-              <Button variant="contained" color={'secondary'} startIcon={<Iconify icon={'icon-park-outline:play'} />} sx={{
-                animation: `${pulse} ${1500}ms ease-out infinite`,
-                mb:5
-              }}>
-               Sunny movies (Hot)
+              <Button
+                variant="contained"
+                color={'secondary'}
+                startIcon={<Iconify icon={'icon-park-outline:play'} />}
+                sx={{
+                  animation: `${pulse} ${1500}ms ease-out infinite`,
+                  mb: 5,
+                }}
+              >
+                Sunny movies (Hot)
               </Button>
             </NextLink>
           </Stack>
@@ -282,11 +307,10 @@ export default function Videos({ data }) {
   );
 }
 
-
 export async function getServerSideProps(context) {
   try {
     const moviedb = new MovieDb(process.env.TMDB_API_KEY);
-    const movies = await moviedb.movieNowPlaying()
+    const movies = await moviedb.movieNowPlaying();
     return {
       props: {
         data: movies.results,

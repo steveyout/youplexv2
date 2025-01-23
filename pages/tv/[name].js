@@ -20,7 +20,7 @@ import Page from '@/components/Page';
 import HeaderBreadcrumbs from '@/components/HeaderBreadcrumbs';
 import { SkeletonPost } from '@/components/skeleton';
 // sections
-import { VideoPostTags, VideoPostRecent,VidstackPlayer } from '@/sections/movies';
+import { VideoPostRecent, VideoPostTags } from '@/sections/movies';
 import Iconify from '@/components/Iconify';
 import { useSnackbar } from 'notistack';
 //movies
@@ -56,58 +56,61 @@ export default function TvPage({ data }) {
   const { enqueueSnackbar } = useSnackbar();
 
   const [error, setError] = useState(null);
-  const[server,setCurrentServer]=useState({
-    server:'VidSrc',
+  const [server, setCurrentServer] = useState({
+    server: 'VidSrc',
     isChanging: false,
+  });
 
-  })
+  const getMovie = useCallback(
+    async (server, isChanging) => {
+      try {
+        if (!movie || isChanging) {
+          setLoading(true);
+          const response = await axios.get(`/api/movie/${id}`, { params: { server: server } });
 
-  const getMovie = useCallback(async (server,isChanging) => {
-    try {
-      if (!movie||isChanging) {
-        setLoading(true)
-        const response = await axios.get(`/api/movie/${id}`,{params:{server:server}});
-
-        if (isMountedRef.current) {
-          setMovie(response.data);
+          if (isMountedRef.current) {
+            setMovie(response.data);
+            setLoading(false);
+          }
+        } else {
           setLoading(false);
         }
-      } else {
-        setLoading(false);
+      } catch (error) {
+        enqueueSnackbar('Oops! Something went wrong,Please try again later', { variant: 'error' });
       }
-    } catch (error) {
-      enqueueSnackbar('Oops! Something went wrong,Please try again later', { variant: 'error' });
-    }
-  }, [isMountedRef]);
-
+    },
+    [isMountedRef]
+  );
 
   //get movie embed url
 
-
   useEffect(() => {
-    getMovie(server.server,server.isChanging);
-  }, [getMovie,server]);
+    getMovie(server.server, server.isChanging);
+  }, [getMovie, server]);
 
   const structuredData = {
-    "@context": "https://schema.org/",
-    "@type": "Movie",
-    "name": movie ? sentenceCase(movie.title?movie.title:movie.name) : sentenceCase(id),
-    "productionCompany": {
-      "@type": "Organization",
-      "name": movie&&movie.production
+    '@context': 'https://schema.org/',
+    '@type': 'Movie',
+    'name': movie ? sentenceCase(movie.title ? movie.title : movie.name) : sentenceCase(id),
+    'productionCompany': {
+      '@type': 'Organization',
+      'name': movie && movie.production,
     },
-    "countryOfOrigin": {
-      "@type": "Country",
-      "name": movie&&movie.country
-    }
+    'countryOfOrigin': {
+      '@type': 'Country',
+      'name': movie && movie.country,
+    },
   };
   return (
     <Page
-      title={movie ? sentenceCase(movie.title?movie.title:movie.name) : sentenceCase(id)}
+      title={movie ? sentenceCase(movie.title ? movie.title : movie.name) : sentenceCase(id)}
       meta={
         <>
-          <meta name="description" content={movie?movie.description:id} />
-          <meta name="keywords" content={movie ? `${movie.tags} ${movie.genres} ${movie.casts}`:''} />
+          <meta name="description" content={movie ? movie.description : id} />
+          <meta
+            name="keywords"
+            content={movie ? `${movie.tags} ${movie.genres} ${movie.casts}` : ''}
+          />
         </>
       }
       structuredData={structuredData}
@@ -119,32 +122,40 @@ export default function TvPage({ data }) {
             links={[
               { name: 'Home', href: '/' },
               { name: 'Tv', href: PATH_PAGE.series },
-              { name: movie ? sentenceCase(movie.title?movie.title:movie.name) : sentenceCase(id) },
+              {
+                name: movie
+                  ? sentenceCase(movie.title ? movie.title : movie.name)
+                  : sentenceCase(id),
+              },
             ]}
           />
 
           {!loading && (
             <Card>
-              <iframe src={movie.embedUrl}/>
+              <iframe src={movie.embedUrl} />
 
               <Box sx={{ p: { xs: 3, md: 5 } }}>
                 <Stack flexWrap="wrap" direction="row" justifyContent="space-between">
                   <Typography variant="h6" sx={{ mb: 5 }}>
-                    {movie.title?movie.title:movie.name}
+                    {movie.title ? movie.title : movie.name}
                   </Typography>
 
                   <Box>
                     <Tooltip title={`Join Telegram channel`}>
                       <NextLink href={'https://t.me/youplexannouncments'} passHref>
-                        <Button variant="contained" startIcon={<Iconify icon={'la:telegram'}/>}>
+                        <Button variant="contained" startIcon={<Iconify icon={'la:telegram'} />}>
                           Telegram
                         </Button>
                       </NextLink>
                     </Tooltip>
-                    <Box sx={{m:3}}/>
+                    <Box sx={{ m: 3 }} />
                     <Tooltip title={`Join Our Discord`}>
                       <NextLink href={'https://discord.gg/5eWu9Vz6tQ'} passHref>
-                        <Button variant="contained" color={'secondary'} startIcon={<Iconify icon={'iconoir:discord'} />}>
+                        <Button
+                          variant="contained"
+                          color={'secondary'}
+                          startIcon={<Iconify icon={'iconoir:discord'} />}
+                        >
                           Discord
                         </Button>
                       </NextLink>
@@ -152,7 +163,7 @@ export default function TvPage({ data }) {
                   </Box>
                 </Stack>
                 <Box>
-                  <VideoPostTags movie={movie} />
+                  <VideoPostTags movie={movie} setMovie={setMovie}/>
                 </Box>
                 {movie.overview}
               </Box>
@@ -173,12 +184,16 @@ export default function TvPage({ data }) {
 export async function getServerSideProps(context) {
   try {
     const id = context.query.id;
-    const server=servers.find((server) => server.name === 'VidSrc');
+    const server = servers.find((server) => server.name === 'VidSrc');
     const moviedb = new MovieDb(process.env.TMDB_API_KEY);
-    const movie=await moviedb.tvInfo({ id: id });
-    const similar=await moviedb.tvSimilar({ id: id });
-    movie.recommended=await similar.results;
-    movie.embedUrl=`${server.url}/${id}`;
+    const movie = await moviedb.tvInfo({ id: id });
+    const similar = await moviedb.tvSimilar({ id: id });
+    movie.episodes = await moviedb.seasonInfo({
+      id: id,
+      season: movie.seasons[0].season_number,
+    });
+    movie.recommended = similar.results;
+    movie.embedUrl = `${server.url}/${id}`;
 
     return {
       props: {

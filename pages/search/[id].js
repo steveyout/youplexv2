@@ -13,7 +13,7 @@ import useIsMountedRef from '@/hooks/useIsMountedRef';
 // utils
 import axios from 'axios';
 // routes
-import { PATH_PAGE, PATH_DASHBOARD } from '@/routes/paths';
+import { PATH_PAGE } from '@/routes/paths';
 // layouts
 import Layout from '@/layouts';
 // components
@@ -26,7 +26,7 @@ import { VideoPostCard, VideoPostsSort, VideoPostsSearch } from '@/sections/movi
 import EmptyContent from '@/components/EmptyContent';
 import InfiniteScroll from 'react-infinite-scroller';
 import { varFade } from '@/components/animate';
-import { SearchForm } from "@/sections/forms";
+import { SearchForm } from '@/sections/forms';
 
 //movies
 import { MovieDb } from 'moviedb-promise';
@@ -68,7 +68,7 @@ const applySort = (posts, sortBy) => {
   }
   return posts;
 };
-export default function movies({ search,pages }) {
+export default function movies({ search, pages }) {
   const { themeStretch } = useSettings();
 
   const isMountedRef = useIsMountedRef();
@@ -80,13 +80,12 @@ export default function movies({ search,pages }) {
   const [loading, setLoading] = useState(movies.length === 0);
   let [page, setPage] = useState(1);
 
-
   const getAllMovies = useCallback(async () => {
     try {
-      setLoading(true)
+      setLoading(true);
       if (movies && !movies.length) {
         const response = await axios.get(`/api/search/`, {
-          params: {query: id},
+          params: { query: id },
         });
 
         if (isMountedRef.current) {
@@ -106,16 +105,15 @@ export default function movies({ search,pages }) {
     getAllMovies();
   }, [getAllMovies]);
 
-
   ///more
   const handleLoadMore = useCallback(async () => {
     try {
-      if (page>=pages) return;
-      if (page===1){
+      if (page >= pages) return;
+      if (page === 1) {
         setPage(page++);
       }
       const response = await axios.get(`/api/search/`, {
-        params: {query: id,page:page},
+        params: { query: id, page: page },
       });
 
       if (isMountedRef.current) {
@@ -128,24 +126,25 @@ export default function movies({ search,pages }) {
   }, [page, id, isMountedRef.current]);
 
   ////////////structured data
-  const list=[]
-  movies&&movies.map((movie,index)=>{
-    list.push({
-      "@type": "ListItem",
-      "position": index,
-      "item": {
-        "@type": "Movie",
-        "url": PATH_PAGE.movie(movie.title),
-        "name": movie.title,
-        "image": process.env.TMDB_URL+movie.poster_path,
-        "dateCreated": movie.release_date,
-      }
-    })
-  })
+  const list = [];
+  movies &&
+    movies.map((movie, index) => {
+      list.push({
+        '@type': 'ListItem',
+        'position': index,
+        'item': {
+          '@type': 'Movie',
+          'url': PATH_PAGE.movie(movie.title),
+          'name': movie.title,
+          'image': process.env.TMDB_URL + movie.poster_path,
+          'dateCreated': movie.release_date,
+        },
+      });
+    });
   const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "itemListElement": list
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    'itemListElement': list,
   };
 
   return (
@@ -154,7 +153,11 @@ export default function movies({ search,pages }) {
         <Container maxWidth={themeStretch ? false : 'lg'}>
           <HeaderBreadcrumbs
             heading="Movies"
-            links={[{ name: 'Home', href: '/' }, { name: 'Movies',href: PATH_PAGE.movies },{ name: id,href:PATH_PAGE.filter(id) }]}
+            links={[
+              { name: 'Home', href: '/' },
+              { name: 'Movies', href: PATH_PAGE.movies },
+              { name: id, href: PATH_PAGE.filter(id) },
+            ]}
           />
           <Stack
             sx={{
@@ -183,7 +186,7 @@ export default function movies({ search,pages }) {
           <InfiniteScroll
             pageStart={0}
             loadMore={handleLoadMore}
-            hasMore={page>=pages}
+            hasMore={page >= pages}
             threshold={2500}
             loader={
               <Grid container spacing={3} mt={1}>
@@ -212,16 +215,16 @@ export default function movies({ search,pages }) {
                 )
               ) : !loading && movies.length === 0 ? (
                 <Grid item xs={12} sm={12} md={12}>
-                <Box sx={{ width:'100%', margin: 'auto', textAlign: 'center' }}>
-                  <EmptyContent
-                    title={'No results'}
-                    img={'/images/empty.jpg'}
-                    description={'Try again'}
-                  />
-                </Box>
-                <Box sx={{margin:2}}>
-                <SearchForm />
-                </Box>
+                  <Box sx={{ width: '100%', margin: 'auto', textAlign: 'center' }}>
+                    <EmptyContent
+                      title={'No results'}
+                      img={'/images/empty.jpg'}
+                      description={'Try again'}
+                    />
+                  </Box>
+                  <Box sx={{ margin: 2 }}>
+                    <SearchForm />
+                  </Box>
                 </Grid>
               ) : (
                 movies.map((post, index) => (
@@ -242,13 +245,13 @@ export async function getServerSideProps(context) {
   try {
     const id = context.params.id;
     const moviedb = new MovieDb(process.env.TMDB_API_KEY);
-    const search=await moviedb.searchMulti({query:id});
-    const pages=search.total_pages;
-    const movies=search.results.filter( (item) => item.media_type !== "person");
+    const search = await moviedb.searchMulti({ query: id });
+    const pages = search.total_pages;
+    const movies = search.results.filter((item) => item.media_type !== 'person');
     return {
       props: {
         search: JSON.parse(JSON.stringify(movies)),
-        pages:pages
+        pages: pages,
       }, // will be passed to the page component as props
     };
   } catch (error) {

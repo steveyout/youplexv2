@@ -47,7 +47,6 @@ VideoPostCard.propTypes = {
 
 export default function VideoPostCard({ movie, index }) {
   const isDesktop = useResponsive('up', 'md');
-  console.log(movie)
   const {  adult,
     backdrop_path,
     name,

@@ -8,7 +8,9 @@ import axios from 'axios';
 import { useState } from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-
+//movies
+import { MovieDb } from 'moviedb-promise';
+import { servers } from '@/utils/servers';
 // components
 
 // ----------------------------------------------------------------------
@@ -18,35 +20,46 @@ VideoPostTags.propTypes = {
 };
 
 export default function VideoPostTags({ movie, setMovie }) {
-  let { genres, episodes, seasons } = movie;
+  let { genres, seasons } = movie;
   const { query, pathname } = useRouter();
   const { id } = query;
   const [active, setActive] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [episodes, setEpisodes] = useState(movie.episodes);
+  const { enqueueSnackbar } = useSnackbar();
+  const moviedb = new MovieDb(process.env.TMDB_API_KEY);
 
   //seasons menu
   const [selectedSeason, setSelectedSeason] = useState(seasons[0].name);
-  const handleSeasonClick = (event, index) => {
-    setSelectedSeason(event.target.value);
+  const handleSeasonClick = async (event, index) => {
+    try {
+      await setLoading(true);
+      await setSelectedSeason(event.target.value);
+      const season = seasons.find((season) => season.name === event.target.value);
+      const episodes = await moviedb.seasonInfo({
+        id: id,
+        season: season.season_number,
+      });
+      await setEpisodes(episodes);
+      await setLoading(false);
+    } catch (error) {
+      enqueueSnackbar('Oops! Something went wrong', { variant: 'error' });
+      console.log(error);
+      setLoading(false);
+    }
   };
-  const { enqueueSnackbar } = useSnackbar();
 
-  const handleChangeEpisode = async (episodeId, index) => {
+  ///change episode
+  const handleChangeEpisode = async (id, episodeId, index) => {
     try {
       if (id && episodeId) {
         setLoading(true);
-        const response = await axios.get(`/api/episode/${id}`, {
-          params: {
-            id: id,
-            episode: episodeId,
-            type: pathname.includes('anime') ? 'anime' : 'movie',
-          },
-        });
+        const server = servers.find((server) => server.name === 'VidSrc');
+        const embedUrl = `${server.url}/${id}/${episodeId}`;
 
         setMovie((prevState) => ({
           ...prevState,
-          sources: response.data.sources,
-          subtitles: response.data.subtitles,
+          embedUrl: embedUrl,
         }));
         setActive(index);
         setLoading(false);
@@ -57,6 +70,7 @@ export default function VideoPostTags({ movie, setMovie }) {
       setLoading(false);
     }
   };
+
   return (
     <>
       <Box sx={{ py: 3 }}>
@@ -74,35 +88,29 @@ export default function VideoPostTags({ movie, setMovie }) {
             Seasons & Episodes
             {loading && <LinearProgress />}
           </Typography>
-          <Select value={selectedSeason} label="Season" onChange={handleSeasonClick}>
+          <Select
+            value={selectedSeason}
+            label="Season"
+            onChange={handleSeasonClick}
+            variant={'outlined'}
+          >
             {seasons.map((season, index) => (
               <MenuItem value={season.name}>{season.name}</MenuItem>
             ))}
           </Select>
-          {episodes &&
-            episodes
-              .filter(
-                (v, i, a) => a.findIndex((v2) => ['season'].every((k) => v2[k] === v[k])) === i
-              )
-              .map((e, index) => (
-                <>
-                  <Typography variant="subtitle1" sx={{ mb: 2 }}>
-                    Season {e.season}
-                  </Typography>
-                  {episodes.map(
-                    (episode, index) =>
-                      episode.season === e.season && (
-                        <Chip
-                          key={episode.id}
-                          label={episode.title ? episode.title : episode.id}
-                          sx={{ m: 0.5 }}
-                          color={active === index ? 'primary' : 'default'}
-                          onClick={(e) => handleChangeEpisode(episode.id, index)}
-                        />
-                      )
-                  )}
-                </>
-              ))}
+
+          <Typography variant="subtitle1" sx={{ mb: 2, mt: 3 }}>
+            {selectedSeason}
+          </Typography>
+          {episodes.episodes.map((episode, index) => (
+            <Chip
+              key={episode.id}
+              label={episode.name}
+              sx={{ m: 0.5 }}
+              color={active === index ? 'primary' : 'default'}
+              onClick={(e) => handleChangeEpisode(id, episode.id, index)}
+            />
+          ))}
         </Box>
       )}
     </>
