@@ -20,7 +20,7 @@ VideoPostTags.propTypes = {
 };
 
 export default function VideoPostTags({ movie, setMovie }) {
-  let { genres, seasons } = movie;
+  let { genres, seasons, external_ids } = movie;
   const { query, pathname } = useRouter();
   const { id } = query;
   const [active, setActive] = useState(0);
@@ -30,18 +30,20 @@ export default function VideoPostTags({ movie, setMovie }) {
   const moviedb = new MovieDb(process.env.TMDB_API_KEY);
 
   //seasons menu
-  const [selectedSeason, setSelectedSeason] = useState(seasons[0].name);
+  const [selectedSeason, setSelectedSeason] = useState(seasons ? seasons[0].name : 0);
   const handleSeasonClick = async (event, index) => {
     try {
-      await setLoading(true);
-      await setSelectedSeason(event.target.value);
-      const season = seasons.find((season) => season.name === event.target.value);
-      const episodes = await moviedb.seasonInfo({
-        id: id,
-        season: season.season_number,
-      });
-      await setEpisodes(episodes);
-      await setLoading(false);
+      if (seasons) {
+        await setLoading(true);
+        await setSelectedSeason(event.target.value);
+        const season = seasons.find((season) => season.name === event.target.value);
+        const episodes = await moviedb.seasonInfo({
+          id: id,
+          season: season.season_number,
+        });
+        await setEpisodes(episodes);
+        await setLoading(false);
+      }
     } catch (error) {
       enqueueSnackbar('Oops! Something went wrong', { variant: 'error' });
       console.log(error);
@@ -50,12 +52,12 @@ export default function VideoPostTags({ movie, setMovie }) {
   };
 
   ///change episode
-  const handleChangeEpisode = async (id, episodeId, index) => {
+  const handleChangeEpisode = async (id, season, episode, episodeId, index) => {
     try {
       if (id && episodeId) {
         setLoading(true);
         const server = servers.find((server) => server.name === 'VidSrc');
-        const embedUrl = `${server.url}/${id}/${episodeId}`;
+        const embedUrl = `${server.url}/${id}/${season}-${episode}`;
 
         setMovie((prevState) => ({
           ...prevState,
@@ -108,7 +110,15 @@ export default function VideoPostTags({ movie, setMovie }) {
               label={episode.name}
               sx={{ m: 0.5 }}
               color={active === index ? 'primary' : 'default'}
-              onClick={(e) => handleChangeEpisode(id, episode.id, index)}
+              onClick={(e) =>
+                handleChangeEpisode(
+                  external_ids.imdb_id,
+                  episode.season_number,
+                  episode.episode_number,
+                  episode.id,
+                  index
+                )
+              }
             />
           ))}
         </Box>

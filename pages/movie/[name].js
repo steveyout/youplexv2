@@ -185,7 +185,7 @@ export async function getServerSideProps(context) {
     const movie = await moviedb.movieInfo({ id: id });
     const similar = await moviedb.movieSimilar({ id: id });
     movie.recommended = await similar.results;
-    movie.embedUrl = `${server.url}/${id}`;
+    movie.embedUrl = `${server.url}/${movie.imdb_id}`;
     console.log(movie);
 
     return {

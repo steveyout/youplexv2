@@ -186,14 +186,14 @@ export async function getServerSideProps(context) {
     const id = context.query.id;
     const server = servers.find((server) => server.name === 'VidSrc');
     const moviedb = new MovieDb(process.env.TMDB_API_KEY);
-    const movie = await moviedb.tvInfo({ id: id });
+    const movie = await moviedb.tvInfo({ id: id, append_to_response: 'external_ids' });
     const similar = await moviedb.tvSimilar({ id: id });
     movie.episodes = await moviedb.seasonInfo({
       id: id,
       season: movie.seasons[0].season_number,
     });
     movie.recommended = similar.results;
-    movie.embedUrl = `${server.url}/${id}`;
+    movie.embedUrl = `${server.url}/tv/${movie.external_ids.imdb_id}`;
 
     return {
       props: {

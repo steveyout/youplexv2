@@ -1,7 +1,7 @@
 export const servers = [
   {
     name: 'VidSrc',
-    url: 'https://v2.vidsrc.me/embed',
+    url: 'https://vidsrc.xyz/embed',
   },
   {
     name: 'SuperEmbed',
