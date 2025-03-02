@@ -212,7 +212,7 @@ export default function Videos({ data }) {
               </Button>
             </NextLink>
 
-            <NextLink href={'https://anime.youplex.site/'} passHref>
+            <NextLink href={'https://watchstream.site/'} passHref>
               <Button
                 variant="contained"
                 color={'info'}
@@ -222,7 +222,7 @@ export default function Videos({ data }) {
                   mb: 5,
                 }}
               >
-                Watch Anime (new)
+                WatchStream movies(The Best)
               </Button>
             </NextLink>
 
