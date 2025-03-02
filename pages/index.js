@@ -222,7 +222,7 @@ export default function Videos({ data }) {
                   mb: 5,
                 }}
               >
-                WatchStream movies(The Best)
+                WatchStream movies (The Best)
               </Button>
             </NextLink>
 
