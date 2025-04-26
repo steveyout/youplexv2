@@ -122,11 +122,11 @@ export default class MyDocument extends Document {
             `}
           </Script>
 
-          <Script data-cfasync="false" strategy="afterInteractive" src="//cheesydrinks.com/db286534355560bb44457576fd0665fb/invoke.js"></Script>
+          <Script data-cfasync="false" strategy="afterInteractive" src="//affectionparson.com/db286534355560bb44457576fd0665fb/invoke.js"></Script>
 
-          <Script data-cfasync="false" strategy="afterInteractive" src="//cheesydrinks.com/cb91f4b32d74a911ec84244e77e12b2f/invoke.js"></Script>
+          <Script data-cfasync="false" strategy="afterInteractive" src="//affectionparson.com/cb91f4b32d74a911ec84244e77e12b2f/invoke.js"></Script>
 
-          <Script data-cfasync="false" strategy="afterInteractive" src="//cheesydrinks.com/32/53/5d/32535d9e78bdbc9c2ccd4394d843466b.js"></Script>
+          <Script data-cfasync="false" strategy="afterInteractive" src="//affectionparson.com/32/53/5d/32535d9e78bdbc9c2ccd4394d843466b.js"></Script>
 
 
           {/*
