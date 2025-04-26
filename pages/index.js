@@ -226,7 +226,7 @@ export default function Videos({ data }) {
               </Button>
             </NextLink>
 
-            <NextLink href={'https://freeebies.site/'} passHref>
+            <NextLink href={'https://streamerflix.xyz/'} passHref>
               <Button
                 variant="contained"
                 color={'error'}
@@ -236,7 +236,7 @@ export default function Videos({ data }) {
                   mb: 5,
                 }}
               >
-                Free internet tools (Hot)
+                Streamerflix (No ads,No lag)
               </Button>
             </NextLink>
 
