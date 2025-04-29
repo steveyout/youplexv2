@@ -36,7 +36,10 @@ export default class MyDocument extends Document {
           />
 
           <meta name="description" content="Watch and stream movies for free" />
-          <meta name="keywords" content="Youplex,earn,games,live stream,instant withdrawals,movies,free movies,youtube,free series,netflix,hulu,onstream" />
+          <meta
+            name="keywords"
+            content="Youplex,earn,games,live stream,instant withdrawals,movies,free movies,youtube,free series,netflix,hulu,onstream"
+          />
           <meta name="author" content="Youplex" />
           <meta name="subject" content="Youplex" />
           <meta name="copyright" content="Youplex" />
@@ -122,12 +125,23 @@ export default class MyDocument extends Document {
             `}
           </Script>
 
-          <Script data-cfasync="false" strategy="afterInteractive" src="//affectionparson.com/db286534355560bb44457576fd0665fb/invoke.js"></Script>
+          <Script
+            data-cfasync="false"
+            strategy="afterInteractive"
+            src="//affectionparson.com/db286534355560bb44457576fd0665fb/invoke.js"
+          ></Script>
 
-          <Script data-cfasync="false" strategy="afterInteractive" src="//affectionparson.com/cb91f4b32d74a911ec84244e77e12b2f/invoke.js"></Script>
+          <Script
+            data-cfasync="false"
+            strategy="afterInteractive"
+            src="//affectionparson.com/cb91f4b32d74a911ec84244e77e12b2f/invoke.js"
+          ></Script>
 
-          <Script data-cfasync="false" strategy="afterInteractive" src="//affectionparson.com/32/53/5d/32535d9e78bdbc9c2ccd4394d843466b.js"></Script>
-
+          <Script
+            data-cfasync="false"
+            strategy="afterInteractive"
+            src="//affectionparson.com/32/53/5d/32535d9e78bdbc9c2ccd4394d843466b.js"
+          ></Script>
 
           {/*
           <Script data-cfasync="false" strategy="afterInteractive">
@@ -142,8 +156,8 @@ export default class MyDocument extends Document {
           <Script async strategy="afterInteractive" src="//acscdn.com/script/aclib.js"></Script>
           <Script data-cfasync="false" strategy="lazyOnload">
             {`
-            aclib.runPop({
-        zoneId: '9033646',
+            aclib.runAutoTag({
+        zoneId: 's3xgwl2iyw',
     });
              `}
           </Script>
@@ -170,12 +184,11 @@ export default class MyDocument extends Document {
     `}
           </Script>
           */}
-
         </Head>
 
         <body>
-        <Main />
-        <NextScript />
+          <Main />
+          <NextScript />
         </body>
       </Html>
     );
