@@ -143,7 +143,6 @@ export default class MyDocument extends Document {
             src="//affectionparson.com/32/53/5d/32535d9e78bdbc9c2ccd4394d843466b.js"
           ></Script>
 
-          {/*
           <Script data-cfasync="false" strategy="afterInteractive">
             {`
 
@@ -151,8 +150,9 @@ export default class MyDocument extends Document {
 
             `}
           </Script>
-           */}
 
+
+          {/*
           <Script async strategy="afterInteractive" src="//acscdn.com/script/aclib.js"></Script>
           <Script data-cfasync="false" strategy="lazyOnload">
             {`
@@ -161,6 +161,7 @@ export default class MyDocument extends Document {
     });
              `}
           </Script>
+           */}
 
           {/*
           <Script src="https://unpkg.com/magic-snowflakes/dist/snowflakes.min.js" strategy="afterInteractive" />
