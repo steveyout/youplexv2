@@ -153,8 +153,6 @@ export default class MyDocument extends Document {
           </Script>
            */}
 
-
-
           <Script async strategy="afterInteractive" src="//acscdn.com/script/aclib.js"></Script>
           <Script data-cfasync="false" strategy="lazyOnload">
             {`
@@ -163,7 +161,6 @@ export default class MyDocument extends Document {
     });
              `}
           </Script>
-
 
           {/*
           <Script src="https://unpkg.com/magic-snowflakes/dist/snowflakes.min.js" strategy="afterInteractive" />
