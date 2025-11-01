@@ -19,6 +19,7 @@ import Layout from '@/layouts';
 import Page from '@/components/Page';
 import HeaderBreadcrumbs from '@/components/HeaderBreadcrumbs';
 import { SkeletonPost } from '@/components/skeleton';
+import Label from '@/components/Label';
 // sections
 import { VideoPostHero, VideoPostTags, VideoPostRecent, VidstackPlayer } from '@/sections/movies';
 import Iconify from '@/components/Iconify';
@@ -129,6 +130,10 @@ export default function MoviePage({ data }) {
           {!loading && (
             <Card>
               <iframe src={movie.embedUrl} />
+              <Typography variant="h6" sx={{ mb: 5 }}>
+                Servers
+                <Label variant={'outlined'} color={'primary'}>Multiembed</Label>
+              </Typography>
 
               <Box sx={{ p: { xs: 3, md: 5 } }}>
                 <Stack flexWrap="wrap" direction="row" justifyContent="space-between">

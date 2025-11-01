@@ -128,20 +128,20 @@ export default class MyDocument extends Document {
           <Script
             data-cfasync="false"
             strategy="afterInteractive"
-            src="//affectionparson.com/db286534355560bb44457576fd0665fb/invoke.js"
+            src="//patronagemaestroforestall.com/db286534355560bb44457576fd0665fb/invoke.js"
           ></Script>
 
           <Script
             data-cfasync="false"
             strategy="afterInteractive"
-            src="//affectionparson.com/cb91f4b32d74a911ec84244e77e12b2f/invoke.js"
+            src="//patronagemaestroforestall.com/cb91f4b32d74a911ec84244e77e12b2f/invoke.js"
           ></Script>
 
           {/*
           <Script
             data-cfasync="false"
             strategy="afterInteractive"
-            src="//affectionparson.com/32/53/5d/32535d9e78bdbc9c2ccd4394d843466b.js"
+            src="//patronagemaestroforestall.com/32/53/5d/32535d9e78bdbc9c2ccd4394d843466b.js"
           ></Script>
 
           <Script data-cfasync="false" strategy="afterInteractive">
