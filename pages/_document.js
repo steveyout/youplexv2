@@ -128,20 +128,20 @@ export default class MyDocument extends Document {
           <Script
             data-cfasync="false"
             strategy="afterInteractive"
-            src="//patronagemaestroforestall.com/db286534355560bb44457576fd0665fb/invoke.js"
+            src="//conservefelt.com/db286534355560bb44457576fd0665fb/invoke.js"
           ></Script>
 
           <Script
             data-cfasync="false"
             strategy="afterInteractive"
-            src="//patronagemaestroforestall.com/cb91f4b32d74a911ec84244e77e12b2f/invoke.js"
+            src="//conservefelt.com/cb91f4b32d74a911ec84244e77e12b2f/invoke.js"
           ></Script>
 
           {/*
           <Script
             data-cfasync="false"
             strategy="afterInteractive"
-            src="//patronagemaestroforestall.com/32/53/5d/32535d9e78bdbc9c2ccd4394d843466b.js"
+            src="//conservefelt.com/32/53/5d/32535d9e78bdbc9c2ccd4394d843466b.js"
           ></Script>
 
           <Script data-cfasync="false" strategy="afterInteractive">
@@ -153,9 +153,11 @@ export default class MyDocument extends Document {
           </Script>
            */}
 
-
-          <Script data-cfasync="false" strategy="afterInteractive" src="//dl4d3y1ajyv3q.cloudfront.net/?aydld=1216074"></Script>
           {/*
+          <Script data-cfasync="false" strategy="afterInteractive" src="//dl4d3y1ajyv3q.cloudfront.net/?aydld=1216074"></Script>
+          */}
+
+
           <Script async strategy="afterInteractive" src="//acscdn.com/script/aclib.js"></Script>
           <Script data-cfasync="false" strategy="lazyOnload">
             {`
@@ -164,7 +166,7 @@ export default class MyDocument extends Document {
     });
              `}
           </Script>
-           */}
+
 
           {/*
           <Script src="https://unpkg.com/magic-snowflakes/dist/snowflakes.min.js" strategy="afterInteractive" />
