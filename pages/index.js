@@ -198,7 +198,7 @@ export default function Videos({ data }) {
           </Stack>
 
           <Stack alignItems={'center'} justifyContent={'center'} mb={5}>
-            <NextLink href={'https://plexmovies.online/'} passHref>
+            <NextLink href={'https://github.com/steveyout/youplex-app/releases/download/nightly-20251125/Youplex-nightly-v3.2.6-armv8-2025-11-25.apk'} passHref>
               <Button
                 variant="contained"
                 color={'warning'}
@@ -208,11 +208,11 @@ export default function Videos({ data }) {
                   mb: 5,
                 }}
               >
-                Zmov movies (multiserver)
+                Download apk (Hot)
               </Button>
             </NextLink>
 
-            <NextLink href={'https://watchstream.site/'} passHref>
+            <NextLink href={'https://nepoflix.site/'} passHref>
               <Button
                 variant="contained"
                 color={'info'}
@@ -222,7 +222,7 @@ export default function Videos({ data }) {
                   mb: 5,
                 }}
               >
-                WatchStream movies (The Best)
+                Nepiglix movies (New)
               </Button>
             </NextLink>
 
