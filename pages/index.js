@@ -222,11 +222,11 @@ export default function Videos({ data }) {
                   mb: 5,
                 }}
               >
-                Nepiglix movies (New)
+                Nepoflix movies (New)
               </Button>
             </NextLink>
 
-            <NextLink href={'https://streamerflix.xyz/'} passHref>
+            <NextLink href={'https://viewflix.site/'} passHref>
               <Button
                 variant="contained"
                 color={'error'}
@@ -236,7 +236,7 @@ export default function Videos({ data }) {
                   mb: 5,
                 }}
               >
-                Streamerflix (No ads,No lag)
+                Viewflix (No ads,No lag,multiple servers)
               </Button>
             </NextLink>
 
