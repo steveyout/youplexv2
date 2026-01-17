@@ -226,7 +226,7 @@ export default function Videos({ data }) {
               </Button>
             </NextLink>
 
-            <NextLink href={'https://viewflix.site/'} passHref>
+            <NextLink href={'https://youplex.cc/wp-content/uploads/2026/01/playpoint.apk'} passHref>
               <Button
                 variant="contained"
                 color={'error'}
@@ -236,7 +236,7 @@ export default function Videos({ data }) {
                   mb: 5,
                 }}
               >
-                Viewflix (No ads,No lag,multiple servers)
+                Play games and earn
               </Button>
             </NextLink>
 
