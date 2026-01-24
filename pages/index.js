@@ -226,7 +226,7 @@ export default function Videos({ data }) {
               </Button>
             </NextLink>
 
-            <NextLink href={'https://youplex.cc/wp-content/uploads/2026/01/playpoint.apk'} passHref>
+            <NextLink href={'https://html5games.site/'} passHref>
               <Button
                 variant="contained"
                 color={'error'}
@@ -236,7 +236,7 @@ export default function Videos({ data }) {
                   mb: 5,
                 }}
               >
-                Play games and earn
+                Play html5games games with friends
               </Button>
             </NextLink>
 
