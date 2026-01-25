@@ -134,7 +134,7 @@ export default class MyDocument extends Document {
           <Script
             data-cfasync="false"
             strategy="afterInteractive"
-            src="//conservefelt.com/cb91f4b32d74a911ec84244e77e12b2f/invoke.js"
+            src="https://disturbsparkler.com/cb91f4b32d74a911ec84244e77e12b2f/invoke.js"
           ></Script>
 
           {/*
